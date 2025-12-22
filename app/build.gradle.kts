@@ -8,8 +8,8 @@ plugins {
 }
 
 dependencies {
-    // Project "app" depends on project "utils". (Project paths are separated with ":", so ":utils" refers to the top-level "utils" project.)
-    implementation(project(":utils"))
+    // Project "app" depends on project "core". (Project paths are separated with ":", so ":core" refers to the top-level "core" project.)
+    implementation(project(":core"))
 }
 
 application {
