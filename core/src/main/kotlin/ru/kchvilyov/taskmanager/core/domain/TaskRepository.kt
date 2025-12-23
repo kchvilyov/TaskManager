@@ -1,9 +1,9 @@
-package ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.domain
+package ru.kchvilyov.taskmanager.core.domain
 
 interface TaskRepository {
     suspend fun getAllTasks(): List<Task>
-    suspend fun getTaskById(id: Int): Task?
-    suspend fun insertTask(task: Task)
+    suspend fun getTaskById(id: Long): Task?
+    suspend fun insertTask(task: Task): Task
     suspend fun updateTask(task: Task): Boolean
-    suspend fun deleteTask(id: Int): Boolean
+    suspend fun deleteTask(id: Long): Boolean
 }

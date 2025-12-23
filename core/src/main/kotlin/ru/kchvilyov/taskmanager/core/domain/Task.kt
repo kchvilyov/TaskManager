@@ -1,9 +1,11 @@
-package ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.domain
+package ru.kchvilyov.taskmanager.core.domain
+
+import java.time.Instant
 
 data class Task(
-    val id: Int,
+    val id: Long,
     val title: String,
     val description: String,
     val isCompleted: Boolean,
-    val createdAt: Long
+    val createdAt: Instant
 )

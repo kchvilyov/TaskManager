@@ -1,6 +1,6 @@
-package ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.presentation
+package ru.kchvilyov.taskmanager.core.presentation
 
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.domain.Task
+import ru.kchvilyov.taskmanager.core.domain.Task
 
 sealed interface TaskIntent {
     data class ToggleTask(val taskId: Int) : TaskIntent

@@ -8,7 +8,9 @@ kotlinxCoroutines = "1.10.2"
 koin = "3.5.0"
 exposed = "0.48.0"
 hikariCP = "5.0.1" # Пул соединений для БД
-postgresql = "42.7.3" # Драйвер PostgreSQL (или h2 для in-memory)
+postgresql = "42.7.3"
+protoliteWellKnownTypes = "18.0.1"
+protoliteWellKnownTypesVersion = "18.0.1" # Драйвер PostgreSQL (или h2 для in-memory)
 
 [libraries]
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -31,6 +33,8 @@ exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kot
 hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikariCP" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypesVersion" }
+#protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
 
 # Для тестирования
 #koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }

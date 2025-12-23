@@ -9,6 +9,8 @@ plugins {
 dependencies {
     // Apply the kotlinx bundle of dependencies from the version catalog (`gradle/libs.versions.toml`).
     implementation(libs.bundles.kotlinxEcosystem)
+    implementation(libs.protolite.well.known.types)
+//    implementation(libs.protolite.well.known.types)
     testImplementation(kotlin("test"))
     implementation(libs.koin.core)
     implementation(libs.hikariCP)

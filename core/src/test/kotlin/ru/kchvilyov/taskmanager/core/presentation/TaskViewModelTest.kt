@@ -12,11 +12,11 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.di.AppContainer
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.domain.Task
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.presentation.TaskIntent
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.presentation.TaskState
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.presentation.TaskViewModel
+import ru.kchvilyov.taskmanager.core.di.AppContainer
+import ru.kchvilyov.taskmanager.core.domain.Task
+import ru.kchvilyov.taskmanager.core.presentation.TaskIntent
+import ru.kchvilyov.taskmanager.core.presentation.TaskState
+import ru.kchvilyov.taskmanager.core.presentation.TaskViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TaskViewModelTest {

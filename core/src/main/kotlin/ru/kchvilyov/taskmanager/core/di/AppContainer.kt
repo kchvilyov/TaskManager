@@ -1,17 +1,43 @@
-package ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.di
+package ru.kchvilyov.taskmanager.core.di
 
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.domain.Task
-import ru.kchvilyov.taskmanager.ru.kchvilyov.taskmanager.core.presentation.TaskViewModel
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
+import kotlinx.coroutines.runBlocking
+import ru.kchvilyov.taskmanager.core.data.repository.TaskRepositoryImpl
+import ru.kchvilyov.taskmanager.core.domain.Task
+import ru.kchvilyov.taskmanager.core.domain.TaskRepository
+import ru.kchvilyov.taskmanager.core.presentation.TaskViewModel
+import java.time.Instant
+import javax.sql.DataSource
 
 class AppContainer {
-//    private val dataSource: TaskRepository = LocalTaskDataSource()
-//    private val repository: TaskRepository = TaskRepositoryImpl(dataSource)
-//    private val viewModelScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val dataSource: DataSource = createHikariDataSource()
+    val taskRepository: TaskRepository = TaskRepositoryImpl(dataSource)
+    val taskViewModel: TaskViewModel = TaskViewModel(taskRepository)
 
-    private val initialTasks = listOf(
-        Task(1, "Task 1", "Description 1", false, 1000L),
-        Task(2, "Task 2", "Description 2", true, 2000L),
-        Task(3, "Task 3", "Description 3", false, 3000L)
-    )
-    val taskViewModel = TaskViewModel(initialTasks)
+    init {
+        // ✅ Используем runBlocking для вызова suspend-функций
+        runBlocking {
+            taskRepository.insertTask(
+                Task(1L, "Learn Kotlin", "Study coroutines and flows", false, Instant.now().minusSeconds(1000))
+            )
+            taskRepository.insertTask(
+                Task(2L, "Write Code", "Implement clean architecture", false, Instant.now().minusSeconds(900))
+            )
+            taskRepository.insertTask(
+                Task(3L, "Review PR", "Check team member's code", true, Instant.now().minusSeconds(800))
+            )
+        }
+    }
+
+    private fun createHikariDataSource(): HikariDataSource {
+        val config = HikariConfig().apply {
+            jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
+            maximumPoolSize = 10
+        }
+        return HikariDataSource(config)
+    }
 }
