@@ -10,6 +10,26 @@ plugins {
 dependencies {
     // Project "app" depends on project "core". (Project paths are separated with ":", so ":core" refers to the top-level "core" project.)
     implementation(project(":core"))
+    // Koin для Dependency Injection
+    implementation(libs.koin.core)
+
+    // Exposed для работы с базой данных
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.java.time)
+
+    // Пул соединений и драйвер БД (H2 для тестов/разработки, PostgreSQL для прода)
+    implementation(libs.hikariCP)
+    runtimeOnly(libs.postgresql) // или implementation(libs.h2) для тестов
+
+//    // Kotlin Coroutines
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${libs.versions.kotlinx.coroutines.get()}")
+//
+//    // Тестирование
+//    testImplementation(libs.koin.test)
+//    testImplementation(libs.junit.jupiter)
+//    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${libs.versions.kotlinx.coroutines.get()}")
 }
 
 application {
