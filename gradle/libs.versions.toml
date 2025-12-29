@@ -1,16 +1,9 @@
 [versions]
 kotlin = "2.2.20"
-kotlinxDatetime = "0.6.2"
-kotlinxSerializationJSON = "1.8.1"
-kotlinxCoroutines = "1.10.2"
-
-# Библиотеки для DI и БД
 koin = "3.5.0"
-exposed = "0.48.0"
 hikaricp = "5.0.1"
 postgresql = "42.7.3"
-protoliteWellKnownTypes = "18.0.1"
-protoliteWellKnownTypesVersion = "18.0.1" # Драйвер PostgreSQL (или h2 для in-memory)
+exposed = "0.48.0"
 
 [libraries]
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -19,30 +12,18 @@ kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlinxCoroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinxCoroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
-# Koin для DI
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 
-# Exposed для работы с БД
+hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
+postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
 
-# Пул соединений и драйвер БД
-hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
-postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
-protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypesVersion" }
-#protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
-
-# Для тестирования
-#koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-#junit-jupiter = "org.junit.jupiter:junit-jupiter:5.11.3"
-
-# Libraries can be bundled together for easier import
 [bundles]
 kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutines-core", "kotlinxCoroutines-test"]
 
 [plugins]
 kotlinPluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-#kotlkotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
