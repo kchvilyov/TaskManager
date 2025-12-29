@@ -8,14 +8,15 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.koin.core)
 
-    // ✅ Только exposed-kotlin-datetime, НЕ java.time
+    // Exposed — core, dao, jdbc, kotlin-datetime
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
-    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.exposed.kotlin.datetime) // ✅ Правильное имя
 
+    // Пул соединений и драйвер БД
     implementation(libs.hikariCP)
-    runtimeOnly(libs.postgresql.driver)
+    runtimeOnly(libs.postgresql.driver) // ✅ Исправлено: libs.postgresql.driver
 }
 
 application {
