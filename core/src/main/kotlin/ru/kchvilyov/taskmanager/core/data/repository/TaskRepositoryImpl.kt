@@ -1,14 +1,11 @@
 package ru.kchvilyov.taskmanager.core.data.repository
 
-import com.google.type.DateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.transaction
-//import org.jetbrains.exposed.sql.kotlin.datetime.DateTime
-//import org.jetbrains.exposed.sql.kotlin.datetime.toJavaInstant
+import org.jetbrains.exposed.sql.kotlin.datetime.DateTime
+import org.jetbrains.exposed.sql.kotlin.datetime.toJavaInstant
 import ru.kchvilyov.taskmanager.core.data.source.local.TasksTable
 import ru.kchvilyov.taskmanager.core.domain.Task
 import ru.kchvilyov.taskmanager.core.domain.TaskRepository
@@ -57,7 +54,7 @@ class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
         }
     }
 
-    private fun rowToTask(row: org.jetbrains.exposed.sql.ResultRow): Task = Task(
+    private fun rowToTask(row: ResultRow): Task = Task(
         id = row[TasksTable.id].value,
         title = row[TasksTable.title],
         description = row[TasksTable.description] ?: "",

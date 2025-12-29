@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.2.20"
 kotlinxDatetime = "0.6.2"
 kotlinxSerializationJSON = "1.8.1"
 kotlinxCoroutines = "1.10.2"
@@ -7,7 +7,7 @@ kotlinxCoroutines = "1.10.2"
 # Библиотеки для DI и БД
 koin = "3.5.0"
 exposed = "0.48.0"
-hikariCP = "5.0.1" # Пул соединений для БД
+hikaricp = "5.0.1"
 postgresql = "42.7.3"
 protoliteWellKnownTypes = "18.0.1"
 protoliteWellKnownTypesVersion = "18.0.1" # Драйвер PostgreSQL (или h2 для in-memory)
@@ -20,17 +20,16 @@ kotlinxCoroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlinxCoroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 # Koin для DI
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 
 # Exposed для работы с БД
-exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
-exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
-exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
-exposed-java-time = { module = "org.jetbrains.exposed:exposed-java-time", version.ref = "exposed" } # Для работы с датами
+exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
+exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
 
 # Пул соединений и драйвер БД
-hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikariCP" }
+hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypesVersion" }

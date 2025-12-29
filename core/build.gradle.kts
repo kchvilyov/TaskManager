@@ -7,9 +7,12 @@ plugins {
 }
 
 dependencies {
+    implementation("org.jetbrains.exposed:exposed-core:0.48.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.48.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.48.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.48.0")
     // Apply the kotlinx bundle of dependencies from the version catalog (`gradle/libs.versions.toml`).
     implementation(libs.bundles.kotlinxEcosystem)
-    implementation(libs.protolite.well.known.types)
 //    implementation(libs.protolite.well.known.types)
     testImplementation(kotlin("test"))
     implementation(libs.koin.core)
