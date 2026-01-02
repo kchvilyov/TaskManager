@@ -18,6 +18,7 @@ kotlinxCoroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 
 hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
+h2 = { group = "com.h2database", name = "h2", version = "2.2.224" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }

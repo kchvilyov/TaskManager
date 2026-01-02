@@ -1,6 +1,5 @@
 package ru.kchvilyov.taskmanager.core.presentation
 
-import kotlinx.coroutines.runBlocking
 import ru.kchvilyov.taskmanager.core.domain.Task
 import java.time.Instant
 import kotlin.test.Test

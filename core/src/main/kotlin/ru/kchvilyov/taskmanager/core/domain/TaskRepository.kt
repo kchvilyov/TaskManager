@@ -6,4 +6,7 @@ interface TaskRepository {
     suspend fun insertTask(task: Task): Task
     suspend fun updateTask(task: Task): Boolean
     suspend fun deleteTask(id: Long): Boolean
+
+    // Только для тестов
+    suspend fun clearTasksForTesting()
 }

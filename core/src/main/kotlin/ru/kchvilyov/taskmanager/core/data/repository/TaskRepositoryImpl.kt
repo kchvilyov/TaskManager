@@ -4,14 +4,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.kotlin.datetime.DateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.toJavaInstant
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
+import org.jetbrains.exposed.sql.transactions.transaction
 import ru.kchvilyov.taskmanager.core.data.source.local.TasksTable
 import ru.kchvilyov.taskmanager.core.domain.Task
 import ru.kchvilyov.taskmanager.core.domain.TaskRepository
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.sql.DataSource
 
-class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
+class TaskRepositoryImpl(dataSource: DataSource) : TaskRepository {
+
+    init {
+        // Подключаем Exposed к DataSource
+        Database.connect(dataSource)
+        // Создаём таблицу при инициализации
+        transaction {
+            SchemaUtils.create(TasksTable)
+        }
+    }
 
     override suspend fun getAllTasks(): List<Task> = withContext(Dispatchers.IO) {
         transaction {
@@ -21,7 +33,10 @@ class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
 
     override suspend fun getTaskById(id: Long): Task? = withContext(Dispatchers.IO) {
         transaction {
-            TasksTable.select { TasksTable.id eq id }.singleOrNull()?.let { rowToTask(it) }
+            TasksTable
+                .select { TasksTable.id eq id }
+                .singleOrNull()
+                ?.let { rowToTask(it) }
         }
     }
 
@@ -31,7 +46,6 @@ class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
                 it[TasksTable.title] = task.title
                 it[TasksTable.description] = task.description
                 it[TasksTable.isCompleted] = task.isCompleted
-                it[TasksTable.createdAt] = DateTime(task.createdAt)
             }
             task.copy(id = id.value)
         }
@@ -43,7 +57,6 @@ class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
                 it[TasksTable.title] = task.title
                 it[TasksTable.description] = task.description
                 it[TasksTable.isCompleted] = task.isCompleted
-                it[TasksTable.createdAt] = DateTime(task.createdAt)
             } > 0
         }
     }
@@ -59,6 +72,16 @@ class TaskRepositoryImpl(private val dataSource: DataSource) : TaskRepository {
         title = row[TasksTable.title],
         description = row[TasksTable.description] ?: "",
         isCompleted = row[TasksTable.isCompleted],
-        createdAt = row[TasksTable.createdAt].toJavaInstant()
+        createdAt = (row[TasksTable.createdAt] as? LocalDateTime)
+            ?.atZone(ZoneOffset.UTC)
+            ?.toInstant()
+            ?: Instant.now()
     )
+
+    // ✅ Реализация метода для тестов
+    override suspend fun clearTasksForTesting() {
+        transaction {
+            TasksTable.deleteWhere { TasksTable.id greaterEq 0 }
+        }
+    }
 }

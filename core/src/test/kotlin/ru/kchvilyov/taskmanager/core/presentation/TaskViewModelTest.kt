@@ -14,9 +14,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ru.kchvilyov.taskmanager.core.di.AppContainer
 import ru.kchvilyov.taskmanager.core.domain.Task
-import ru.kchvilyov.taskmanager.core.presentation.TaskIntent
-import ru.kchvilyov.taskmanager.core.presentation.TaskState
-import ru.kchvilyov.taskmanager.core.presentation.TaskViewModel
+import java.time.Instant
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TaskViewModelTest {
@@ -25,10 +23,13 @@ class TaskViewModelTest {
     private lateinit var viewModel: TaskViewModel
 
     @BeforeEach
-    fun setUp() {
+    fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
         container = AppContainer()
         viewModel = container.taskViewModel
+
+        // Очищаем таблицу перед каждым тестом
+        container.taskRepository.clearTasksForTesting()
     }
 
     @AfterEach
@@ -49,10 +50,9 @@ class TaskViewModelTest {
 
         // Проверяем, что было хотя бы одно состояние
         assertTrue(states.isNotEmpty(), "State should emit at least once")
-
         val finalState = states.last()
         assertFalse(finalState.isLoading)
-        assertEquals(3, finalState.tasks.size)
+        assertEquals(0, finalState.tasks.size) // ✅ ожидаем 0
 
         job.cancel() // ⚠️ Обязательно отменяем!
     }
@@ -65,16 +65,22 @@ class TaskViewModelTest {
         }
 
         testDispatcher.scheduler.advanceUntilIdle()
-
         val initialCount = states.last().tasks.size
-        val newTask = Task(4, "New Task", "Description", false, System.currentTimeMillis())
+
+        val newTask = Task(
+            id = 0L, // ❌ Не важно — будет перезаписан
+            title = "New Task",
+            description = "Description",
+            isCompleted = false,
+            createdAt = Instant.now()
+        )
         viewModel.processIntent(TaskIntent.AddTask(newTask))
 
         testDispatcher.scheduler.advanceUntilIdle()
 
         val finalCount = states.last().tasks.size
         assertEquals(initialCount + 1, finalCount)
-        assertTrue(states.last().tasks.any { it.id == 4 })
+        assertTrue(states.last().tasks.any { it.title == "New Task" }) // ✅ Проверяем по названию
 
         job.cancel()
     }
@@ -88,16 +94,30 @@ class TaskViewModelTest {
 
         testDispatcher.scheduler.advanceUntilIdle()
 
-        val initialTask = states.last().tasks.find { it.id == 1 }
-        assertNotNull(initialTask, "Initial task with id=1 should exist")
-        val initialStatus = initialTask?.isCompleted
+        val testTask = Task(
+            id = 1L,
+            title = "Test Task",
+            description = "",
+            isCompleted = false,
+            createdAt = Instant.now()
+        )
+        viewModel.processIntent(TaskIntent.AddTask(testTask))
 
-        viewModel.processIntent(TaskIntent.ToggleTask(1))
         testDispatcher.scheduler.advanceUntilIdle()
 
-        val updatedTask = states.last().tasks.find { it.id == 1 }
-        assertNotNull(updatedTask, "Updated task with id=1 should exist")
-        initialStatus?.let { assertEquals(!it, updatedTask?.isCompleted) }
+        val initialTask = states.last().tasks.find { it.id == 1L }
+        assertNotNull(initialTask)
+        // Присваиваем в отдельную переменную после проверки
+        assertFalse(initialTask!!.isCompleted)
+
+        viewModel.processIntent(TaskIntent.ToggleTask(1L))
+
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        val updatedTask = states.last().tasks.find { it.id == 1L }
+        assertNotNull(updatedTask)
+        // Здесь тоже
+        assertTrue(updatedTask!!.isCompleted)
 
         job.cancel()
     }

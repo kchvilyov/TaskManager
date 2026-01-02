@@ -14,4 +14,6 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.kotlin.datetime) // ✅ Обязательно!
+
+    runtimeOnly(libs.h2)
 }
